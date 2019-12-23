@@ -5,7 +5,7 @@ import requests
 import clipboard
 
 # contructing URL to ping to get the website to scrap data
-url = "https://www.amazondistribution.in/search?size=2page=1&ref_=sr_nr_crf_department";
+url = "https://www.amazondistribution.in/search?size=5000page=1&ref_=sr_nr_crf_department";
 
 # sending http GET request to get the contents of the website
 html_doc = requests.get(url)
@@ -28,6 +28,6 @@ i=0
 
 # looping through all listItems in unorderedList 
 for listItem in ulBody.findAll("li"):
-    i+=1
+    heading 
 
 print(i)
