@@ -5,17 +5,30 @@ import requests
 import clipboard
 import csv 
 
+
+url = "https://www.amazondistribution.in/search?size=1&page=1&ref_=sr_nr_crf_department"
+
+html_doc = requests.get(url)
+
+htmlContent = html_doc.content
+
+soup = BeautifulSoup(html_doc.content,'html.parser')
+
+querySize = int(str(soup.find("div",{"class":"a-row top-bar"}).find("div",{"class":"a-column a-span6 a-text-left"}).text).replace("Showing 1 to 1 of ","").replace(" Results",""))
+print(querySize)
+
+
 fields = ['Image URL', 'Item Name', 'MRP', 'Incl.GST','Margins'] 
 
 csvDataRows = []
-
-querySize = 100
 
 # contructing URL to ping to get the website to scrap data
 url = "https://www.amazondistribution.in/search?size="+str(querySize)+"&page=1&ref_=sr_nr_crf_department"
 
 # sending http GET request to get the contents of the website
 html_doc = requests.get(url)
+
+print("got html content")
 
 # getting the reponse HTML content
 htmlContent = html_doc.content
@@ -36,7 +49,6 @@ i=0
 # looping through all listItems in unorderedList 
 listItems = ulBody.findAll("li",{"class":"result-row"})
 while i<querySize:
-    print(i)
 
     try:
         img = str(listItems[i].find("img").attrs.get("src"))
@@ -83,3 +95,5 @@ with open(filename, 'w', encoding='utf-8', newline='') as csvfile:
       
     # writing the data rows 
     csvwriter.writerows(csvDataRows)
+
+print("writen and done")
